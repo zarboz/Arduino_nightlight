@@ -1,13 +1,16 @@
-CODE: SELECT ALL | TOGGLE FULL SIZE
 #include <Adafruit_NeoPixel.h>
 #define PIN 4
 #define NUMPIXELS 16
 
-const int onbuttonPin = A0;
-int buttonState1 = 0;
+const int onbuttonPin = 3;
+//int buttonState1 = 0;
+boolean currswitch1state = LOW;
+boolean lastswitch1state = LOW;
 
-const int offbuttonPin = A4;
-int buttonState2 = 0;
+const int offbuttonPin = 2;
+//int buttonState2 = 0;
+boolean currswitch2state = LOW;
+boolean lastswitch2state = LOW;
 
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
 
@@ -20,17 +23,17 @@ void setup() {
 }
 
 void loop() {
-  buttonState1 = analogRead(onbuttonPin);
-  buttonState2 = analogRead(offbuttonPin);
-  if (buttonState1 == 1) {
+  currswitch1state = digitalRead(onbuttonPin);
+  currswitch2state = digitalRead(offbuttonPin);
+  if (currswitch1state == HIGH && lastswitch1state == LOW) {
   Serial.println("Lights on");
-  Serial.println(buttonState1);
-  colorWipe(strip.Color(255, 255, 255), 75);
+  Serial.println(currswitch1state);
+  colorWipe(strip.Color(255, 255, 255), 25);
   }
-   if (buttonState2 == 1) {
+   if (currswitch2state == HIGH && lastswitch2state == LOW) {
      Serial.println("Switch 2 on");
-  Serial.println(buttonState2);
-  colorWipe(strip.Color(0, 0, 0), 100); 
+  Serial.println(currswitch2state);
+  colorWipe(strip.Color(0, 0, 0), 5); 
    }
 }
 
@@ -40,4 +43,6 @@ void colorWipe(uint32_t c, uint8_t wait) {
       strip.show();
       delay(wait);
   }
+  lastswitch1state = currswitch1state;
+  lastswitch2state = currswitch2state;
 }
