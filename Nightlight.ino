@@ -6,7 +6,7 @@ const int onbuttonPin = 3;
 //int buttonState1 = 0;
 boolean currswitch1state = LOW;
 boolean lastswitch1state = LOW;
-boolean lampState = FALSE;
+boolean lampState = false;
 
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
 
@@ -15,12 +15,10 @@ void setup() {
   strip.begin();
   strip.show();
   pinMode(onbuttonPin, INPUT);
-  pinMode(offbuttonPin, INPUT);
 }
 
 void loop() {
   currswitch1state = digitalRead(onbuttonPin);
-  currswitch2state = digitalRead(offbuttonPin);
   if (currswitch1state == HIGH && lastswitch1state == LOW) 
   {
    lampState = !lampState;  // toggle the lamp state
@@ -34,6 +32,5 @@ void loop() {
      colorWipe(strip.Color(0, 0, 0), 25);  // lamp off
   }
   lastswitch1state = currswitch1state;
-  lastswitch2state = currswitch2state;
 }
 
